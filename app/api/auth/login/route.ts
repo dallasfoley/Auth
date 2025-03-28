@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { compare } from "bcrypt";
+import { compare } from "bcryptjs";
 import { cookies } from "next/headers";
 import { randomUUID } from "crypto";
 

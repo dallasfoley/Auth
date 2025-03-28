@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { hash } from "bcrypt";
+import { hash } from "bcryptjs";
 
 import { db } from "@/drizzle/db";
 import { users } from "@/drizzle/schema";
