@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { db } from "@/drizzle/db";
 import { sessions } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 export async function POST() {
   try {
@@ -16,13 +17,13 @@ export async function POST() {
       // Clear cookie
       (await cookies()).delete("session-token");
     }
-
-    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Logout error:", error);
     return NextResponse.json(
       { error: "An error occurred during logout" },
       { status: 500 }
     );
+  } finally {
+    redirect("/login");
   }
 }
