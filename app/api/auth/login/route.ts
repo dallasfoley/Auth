@@ -10,6 +10,7 @@ import { eq } from "drizzle-orm";
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
+    console.log("Login attempt for:", email);
 
     // Validate input
     if (!email || !password) {
@@ -35,13 +36,15 @@ export async function POST(request: Request) {
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
+      console.log("Password verification result: fail");
       return NextResponse.json(
         { error: "Invalid email or password" },
         { status: 401 }
       );
     }
-
+    console.log("Password verification result: success");
     // Create session
+    console.log("Creating session for user:", user.id);
     const sessionToken = randomUUID();
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7); // Session expires in 7 days
@@ -53,13 +56,12 @@ export async function POST(request: Request) {
     });
 
     // Set session cookie
-
+    console.log("Setting session cookie:", sessionToken);
     (await cookies()).set({
       name: "session-token",
       value: sessionToken,
       httpOnly: true,
       path: "/",
-      secure: process.env.NODE_ENV === "production",
       maxAge: 60 * 60 * 24 * 7, // 1 week
     });
 
