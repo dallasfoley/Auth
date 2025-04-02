@@ -62,6 +62,7 @@ export async function POST(request: Request) {
       value: sessionToken,
       httpOnly: true,
       path: "/",
+      secure: process.env.COOKIE_SECURE === "true",
       maxAge: 60 * 60 * 24 * 7, // 1 week
     });
 
